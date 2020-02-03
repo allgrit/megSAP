@@ -2,11 +2,11 @@
 /** 
 	@page data_setup
 */
-
+print " data setup 0\n";
 require_once(dirname($_SERVER['SCRIPT_FILENAME'])."/../Common/all.php");
 
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-
+print " data setup 1\n";
 //parse command line arguments
 $parser = new ToolBase("data_setup", "Creates a local copy of the reference genome and annotation data. They are heavily used during data analysis and should not be accessed via the network.");
 $parser->addString("build", "Genome build.", false);
@@ -14,10 +14,11 @@ extract($parser->parse($argv));
 
 
 //init
+print " data setup 2\n";
 $data_folder = get_path("data_folder");
 $local_data = get_path("local_data");
 $rsync = "rsync --size-only --recursive --no-perms --no-acls --omit-dir-times --no-group --no-owner --chmod=ugo=rwX";
-
+print " data setup 3\n";
 ######################### reference genome #########################
 $genome_folder = "{$data_folder}/genomes/";
 print "### Reference genome ###\n";

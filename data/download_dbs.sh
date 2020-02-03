@@ -10,7 +10,7 @@ dbs=$root/dbs/
 ngsbits=$tools/ngs-bits/bin
 genome=$root/genomes/GRCh37.fa
 
-
+if(false) then
 #Install ClinGen dosage sensitivity - ftp://ftp.ncbi.nlm.nih.gov/pub/dbVar/clingen
 cd $dbs
 mkdir ClinGen
@@ -52,7 +52,7 @@ wget -O - ftp://ftp.ebi.ac.uk/pub/databases/genenames/hgnc_complete_set.txt.gz |
 
 #Install gnomAD (genome data) - http://gnomad.broadinstitute.org/downloads
 cd $dbs
-mkdir gnomAD
+#mkdir gnomAD
 cd gnomAD
 wget -O - https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.1.vcf.bgz | gunzip | $ngsbits/VcfLeftNormalize -ref $genome | $ngsbits/VcfStreamSort | php $src/Tools/db_converter_gnomad.php -header > gnomAD_genome_r2.1.1.vcf
 wget -O - https://storage.googleapis.com/gnomad-public/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.2.vcf.bgz | gunzip | $ngsbits/VcfLeftNormalize -ref $genome | $ngsbits/VcfStreamSort | php $src/Tools/db_converter_gnomad.php >> gnomAD_genome_r2.1.1.vcf
@@ -127,15 +127,16 @@ cd GIAB/NA12878
 wget https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/NA12878_HG001/latest/GRCh37/HG001_GRCh37_GIAB_highconf_CG-IllFB-IllGATKHC-Ion-10X-SOLID_CHROM1-X_v.3.3.2_highconf_PGandRTGphasetransfer.vcf.gz -O high_conf_variants.vcf.gz
 wget https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/NA12878_HG001/latest/GRCh37/HG001_GRCh37_GIAB_highconf_CG-IllFB-IllGATKHC-Ion-10X-SOLID_CHROM1-X_v.3.3.2_highconf_PGandRTGphasetransfer.vcf.gz.tbi -O high_conf_variants.vcf.gz.tbi
 wget https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/NA12878_HG001/latest/GRCh37/HG001_GRCh37_GIAB_highconf_CG-IllFB-IllGATKHC-Ion-10X-SOLID_CHROM1-X_v.3.3.2_highconf_nosomaticdel.bed -O high_conf_regions.bed
+fi
 
 #install OMIM (you might need a license, installation only possible after ngs-bits including NGSD is installed)
-#cd $dbs
+cd $dbs
 #mkdir OMIM
-#cd OMIM
+cd OMIM
 #manual download of ftp://ftp.omim.org/OMIM/genemap2.txt
-#php $src/Tools/db_converter_omim.php | $ngsbits/BedSort > omim.bed
-#bgzip -c omim.bed > omim.bed.gz
-#tabix -p bed omim.bed.gz
+php $src/Tools/db_converter_omim.php | $ngsbits/BedSort > omim.bed
+bgzip -c omim.bed > omim.bed.gz
+tabix -p bed omim.bed.gz
 
 #Install HGMD (you need a license)
 #manual download of files hgmd_pro_2019.3_hg19.vcf and hgmd_pro-2019.3.dump.gz from https://portal.biobase-international.com/cgi-bin/portal/login.cgi 

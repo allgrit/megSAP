@@ -30,7 +30,7 @@ feature_counts = [path]/data/tools/subread-2.0.0/bin/featureCounts
 skewer = [path]/data/tools/skewer-0.2.2/skewer
 
 [folders]
-local_data = /tmp/local_ngs_data/
+local_data = /home/allgrit/dna/megSAP/localData/
 data_folder = [path]/data/
 test_data_folder = [path]/data/test_data/
 project_folder = 
@@ -40,9 +40,9 @@ copy_vep_dbs_to_local_data = false
 delete_fastq_files = false
 
 [mysql-databases]
-db_host['NGSD'] = "localhost"
+db_host['NGSD'] = "127.0.0.1"
 db_name['NGSD'] = "ngsd"
-db_user['NGSD'] = "ngsduser"
+db_user['NGSD'] = ""
 db_pass['NGSD'] = ""
 
 [grid_engine]

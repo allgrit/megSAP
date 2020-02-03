@@ -24,7 +24,7 @@ $parser->addFlag("correction_n", "Use Ns for errors by barcode correction.", tru
 $parser->addString("out_folder", "Folder where analysis results should be stored. Default is same as in '-folder' (e.g. Sample_xyz/).", true, "default");
 $parser->addFlag("somatic", "Set somatic single sample analysis options (i.e. correction_n, clip_overlap).");
 extract($parser->parse($argv));
-
+print " here 1\n";
 //init
 if($out_folder=="default")
 {
@@ -52,7 +52,7 @@ foreach($steps as $step)
 {
 	if (!in_array($step, $steps_all)) trigger_error("Unknown processing step '$step'!", E_USER_ERROR);
 }
-
+print " here 2\n";
 //log server name
 list($server) = exec2("hostname -f");
 $user = exec('whoami');
@@ -79,7 +79,7 @@ if (in_array("sv", $steps) && $is_wgs_shallow)
 	trigger_error("Skipping step 'sv' - Structural variant calling is not supported for shallow WGS samples!", E_USER_NOTICE);
 	if (($key = array_search("sv", $steps)) !== false) unset($steps[$key]);
 }
-if (db_is_enabled("NGSD"))
+if (false && db_is_enabled("NGSD"))
 {
 	$db = DB::getInstance("NGSD", false);
 	list($rc_id, $rc_vars_exist, $rc_cnvs_exist) = report_config($db, $name);
@@ -94,10 +94,10 @@ if (db_is_enabled("NGSD"))
 		if (($key = array_search("cn", $steps)) !== false) unset($steps[$key]);
 	}
 }
-
+print " here 3\n";
 //set up local NGS data copy (to reduce network traffic and speed up analysis)
 $parser->execTool("Tools/data_setup.php", "-build ".$sys['build']);
-
+print " here 4\n";
 //output file names
 //rename out folder
 $bamfile = $out_folder."/".$name.".bam";
@@ -131,7 +131,7 @@ $rohfile = $out_folder."/".$name."_rohs.tsv";
 $baffile = $out_folder."/".$name."_bafs.igv";
 
 $sv_manta_file = $out_folder ."/". $name . "_manta_var_structural.vcf.gz";
-
+print " here 5\n";
 //move old data to old_[date]_[random]-folder
 if($backup && in_array("ma", $steps))
 {

@@ -42,6 +42,7 @@ $repository_basedir = repository_basedir();
 $data_folder = get_path("data_folder");
 $hgmd_file = "{$data_folder}/dbs/HGMD/hgmd_cnvs.bed";
 $omim_file = "{$data_folder}/dbs/OMIM/omim.bed";
+print("init");
 
 //check steps
 $steps = explode(",", $steps);
@@ -66,7 +67,7 @@ foreach($status as $stat)
 	}
 }
 $status = array_combine($bams, $status);
-
+print("check input sample names\n");
 //check input sample names
 $names = array();
 $tmp = array();
@@ -118,13 +119,14 @@ if (!file_exists($out_folder))
 		trigger_error("Could not change privileges of folder '{$out_folder}'!", E_USER_ERROR);
 	}
 }
-
+print("(1) variant calling of all samples together (with very conservative parameters) \n");
 //(1) variant calling of all samples together (with very conservative parameters)
 $vcf_all = $out_folder."all.vcf.gz";
 $vcf_all_mito = $out_folder."all_mito.vcf.gz";
 $mito = enable_special_mito_vc($sys);
 if (in_array("vc", $steps))
 {
+	print("(1) variant calling of all samples together (with very conservative parameters) started \n");
 	$args = array();
 	$args[] = "-bam ".implode(" ", $bams);
 	$args[] = "-out $vcf_all";
@@ -134,13 +136,14 @@ if (in_array("vc", $steps))
 	$args[] = "-target_extend 50";
 	$args[] = "-build ".$sys['build'];
 	$args[] = "-threads $threads";
+	print("NGS/vc_freebayes.php \n" );
 	$parser->execTool("NGS/vc_freebayes.php", implode(" ", $args), true);	
-
+	print("NGS/vc_freebayes.php end \n");
 	//variant calling for mito with special parameters
 	if ($mito)
 	{
 		$target_mito = $parser->tempFile("_mito.bed");
-		file_put_contents($target_mito, "chrMT\t0\t16569");
+		file_put_contents($target_mito, "MT\t0\t16569");
 		
 		$args = array();
 		$args[] = "-bam ".implode(" ", $bams);
@@ -152,7 +155,7 @@ if (in_array("vc", $steps))
 		$parser->execTool("NGS/vc_freebayes.php", implode(" ", $args), true);
 	}
 }
-
+print("(2) annotation");
 //(2) annotation
 if (in_array("an", $steps))
 {
